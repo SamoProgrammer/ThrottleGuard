@@ -1,3 +1,5 @@
+![Project Image](https://github.com/SamoProgrammer/ThrottleGuard/blob/main/ProjectImage.webp)
+
 # ThrottleGuard - Rate Limiting Middleware
 
 **ThrottleGuard** is a customizable ASP.NET Core middleware for rate limiting API requests with added features like **graceful degradation**. It allows you to manage the rate of incoming requests, returning cached responses or adding artificial delays as users approach the limit, providing a smoother experience without abrupt rejections.
