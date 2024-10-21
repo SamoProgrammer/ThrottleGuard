@@ -1,23 +1,27 @@
 var builder = WebApplication.CreateBuilder(args);
 
 // Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddStackExchangeRedisCache(options =>
+{
+    options.Configuration = builder.Configuration.GetConnectionString("Redis");
+});
+builder.Services.AddControllers();
 builder.Services.AddSwaggerGen();
 
 var app = builder.Build();
 
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
-{
-    app.UseSwagger();
-    app.UseSwaggerUI(c =>
+// Enable middleware to serve generated Swagger as a JSON endpoint.
+app.UseSwagger();
+app.UseSwaggerUI(c => 
 {
     c.SwaggerEndpoint("/swagger/v1/swagger.json", "ThrottleGuard API");
 });
-}
 
-app.UseHttpsRedirection();
+// Register the custom RateLimitingMiddleware in the request pipeline
+app.UseMiddleware<RateLimitingMiddleware>();
 
+app.UseAuthorization();
+
+app.MapControllers();
 
 app.Run();
